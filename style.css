@@ -146,11 +146,11 @@ body {
 
 .progress-bar-bg {
     background: #2d2d39;
-    height: 12px;
-    border-radius: 6px;
+    height: 16px;          /* Forces the background container to stay open */
+    border-radius: 8px;
     margin: 10px 0;
-    overflow: hidden;
-    position: relative;
+    overflow: hidden;      /* Makes sure overlapping segments don't leak past round corners */
+    position: relative;    /* Anchor point for the absolute-positioned bars inside */
 }
 
 .progress-bar {
