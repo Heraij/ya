@@ -73,16 +73,21 @@
     </main>
 
     <script>
+        // Updated backup fallback data without hardcoded ranks
         const fallbackList = [
-            { "rank": 1, "name": "B", "author": "MotleyOrc", "difficulty": "Medium Demon", "tier": "medium", "attempts": "1,200", "video_id": "" },
-            { "rank": 2, "name": "The Nightmare", "author": "Jax", "difficulty": "Easy Demon", "tier": "easy", "attempts": "340", "video_id": "" }
+            { "name": "B", "author": "MotleyOrc", "difficulty": "Medium Demon", "tier": "medium", "attempts": "1,200", "video_id": "" },
+            { "name": "The Nightmare", "author": "Jax", "difficulty": "Easy Demon", "tier": "easy", "attempts": "340", "video_id": "" }
         ];
 
         function renderList(completions) {
             const container = document.getElementById('demon-list-container');
             container.innerHTML = '';
 
-            completions.forEach(item => {
+            // Using (item, index) lets us track exactly where the level sits top-to-bottom
+            completions.forEach((item, index) => {
+                // Since array index starts at 0, adding 1 turns it into #1, #2, #3, etc.
+                const dynamicRank = index + 1;
+
                 let videoButton = '';
                 if (item.video_id) {
                     videoButton = `<a href="https://youtu.be/${item.video_id}" target="_blank" class="watch-btn">Watch Video</a>`;
@@ -90,7 +95,7 @@
 
                 container.innerHTML += `
                     <div class="card list-item border-${item.tier}">
-                        <div class="list-rank">#${item.rank}</div>
+                        <div class="list-rank">#${dynamicRank}</div>
                         <div class="list-info">
                             <h3>${item.name}</h3>
                             <div class="list-meta">
