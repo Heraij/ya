@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GD Accomplishments Portfolio</title>
+    <title>creatorplus100 | GD Portfolio</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,7 +11,7 @@
     <!-- Header / Hero Section -->
     <header class="hero">
         <div class="hero-content">
-            <h1>YourGDName</h1>
+            <h1>creatorplus100</h1>
             <p>Geometry Dash Smasher | 240Hz Player</p>
         </div>
     </header>
@@ -20,15 +20,15 @@
     <section class="stats-container">
         <div class="stat-box">
             <h3>Stars</h3>
-            <p class="stat-number">2,500+</p>
+            <p class="stat-number" id="gd-stars">2,500+</p>
         </div>
         <div class="stat-box">
             <h3>Demons Beaten</h3>
-            <p class="stat-number">42</p>
+            <p class="stat-number" id="gd-demons">42</p>
         </div>
         <div class="stat-box">
-            <h3>Current Hardest</h3>
-            <p class="stat-number">Deadlocked</p>
+            <h3>Creator Points</h3>
+            <p class="stat-number" id="gd-cp">0</p>
         </div>
     </section>
 
@@ -38,16 +38,18 @@
         <!-- Current Grinds -->
         <section class="section">
             <h2>Current Projects</h2>
-            <div class="card project-card">
-                <h3>Future Funk</h3>
-                <p class="author">by JonathanGD (Hard Demon)</p>
-                <div class="progress-container">
-                    <p>Current Progress: <strong>16-54%, 55-100%</strong></p>
-                    <div class="progress-bar-bg">
-                        <!-- Visualizing the massive 55-100% run -->
-                        <div class="progress-bar" style="width: 45%; margin-left: 55%;"></div>
+            <div id="projects-list">
+                <!-- Hardcoded Default: This displays instantly even if offline! -->
+                <div class="card project-card">
+                    <h3>Future Funk</h3>
+                    <p class="author">by JonathanGD (Hard Demon)</p>
+                    <div class="progress-container">
+                        <p>Current Progress: <strong>16-54%, 55-100%</strong></p>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar" style="width: 45%; margin-left: 55%;"></div>
+                        </div>
+                        <p class="note">Using the Blitzkrieg Method. Destroying it chunk by chunk!</p>
                     </div>
-                    <p class="note">Using the Blitzkrieg Method. Practically done!</p>
                 </div>
             </div>
         </section>
@@ -55,7 +57,8 @@
         <!-- Top Accomplishments -->
         <section class="section">
             <h2>Top Accomplishments</h2>
-            <div class="grid">
+            <div class="grid" id="accomplishments-grid">
+                <!-- Hardcoded Default: No more missing panels or error messages! -->
                 <div class="card demon-card hard">
                     <h3>Future Funk</h3>
                     <p>Progress: 55-100% & 16-54%</p>
@@ -77,91 +80,67 @@
     </main>
 
     <footer>
-        <p>Made with determination and muscle memory | © 2026</p>
+        <p>Live stats powered by GDBrowser API | © 2026</p>
     </footer>
 
-</body>
-</html><!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GD Accomplishments Portfolio</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    <!-- JavaScript to seamlessly update data when hosted live -->
+    <script>
+        async function loadWebsiteData() {
+            // 1. Try fetching live stats from GDBrowser
+            try {
+                const gdResponse = await fetch('https://gdbrowser.com/api/profile/creatorplus100');
+                if (gdResponse.ok) {
+                    const gdData = await gdResponse.json();
+                    document.getElementById('gd-stars').innerText = gdData.stars.toLocaleString();
+                    document.getElementById('gd-demons').innerText = gdData.demons.toLocaleString();
+                    document.getElementById('gd-cp').innerText = gdData.creatorPoints.toLocaleString();
+                }
+            } catch (err) {
+                console.log("Using default stat placeholders (GDBrowser API blocked locally).");
+            }
 
-    <!-- Header / Hero Section -->
-    <header class="hero">
-        <div class="hero-content">
-            <h1>YourGDName</h1>
-            <p>Geometry Dash Smasher | 240Hz Player</p>
-        </div>
-    </header>
+            // 2. Try fetching custom level layouts from data.json
+            try {
+                const jsonResponse = await fetch('data.json');
+                if (!jsonResponse.ok) throw new Error();
+                const localData = await jsonResponse.json();
 
-    <!-- Quick Stats -->
-    <section class="stats-container">
-        <div class="stat-box">
-            <h3>Stars</h3>
-            <p class="stat-number">2,500+</p>
-        </div>
-        <div class="stat-box">
-            <h3>Demons Beaten</h3>
-            <p class="stat-number">42</p>
-        </div>
-        <div class="stat-box">
-            <h3>Current Hardest</h3>
-            <p class="stat-number">Deadlocked</p>
-        </div>
-    </section>
+                // If data.json is found and loaded successfully, overwrite the HTML defaults
+                const projectsContainer = document.getElementById('projects-list');
+                projectsContainer.innerHTML = ''; 
+                localData.current_projects.forEach(proj => {
+                    projectsContainer.innerHTML += `
+                        <div class="card project-card">
+                            <h3>${proj.name}</h3>
+                            <p class="author">by ${proj.author} (${proj.difficulty})</p>
+                            <div class="progress-container">
+                                <p>Current Progress: <strong>${proj.progress_text}</strong></p>
+                                <div class="progress-bar-bg">
+                                    <div class="progress-bar" style="width: ${proj.bar_width}; margin-left: ${proj.bar_offset};"></div>
+                                </div>
+                                <p class="note">${proj.note}</p>
+                            </div>
+                        </div>
+                    `;
+                });
 
-    <!-- Main Content Grid -->
-    <main class="container">
-        
-        <!-- Current Grinds -->
-        <section class="section">
-            <h2>Current Projects</h2>
-            <div class="card project-card">
-                <h3>Future Funk</h3>
-                <p class="author">by JonathanGD (Hard Demon)</p>
-                <div class="progress-container">
-                    <p>Current Progress: <strong>16-54%, 55-100%</strong></p>
-                    <div class="progress-bar-bg">
-                        <!-- Visualizing the massive 55-100% run -->
-                        <div class="progress-bar" style="width: 45%; margin-left: 55%;"></div>
-                    </div>
-                    <p class="note">Using the Blitzkrieg Method. Practically done!</p>
-                </div>
-            </div>
-        </section>
+                const accomplishmentsGrid = document.getElementById('accomplishments-grid');
+                accomplishmentsGrid.innerHTML = ''; 
+                localData.top_accomplishments.forEach(acc => {
+                    accomplishmentsGrid.innerHTML += `
+                        <div class="card demon-card ${acc.class.split(' ')[0]}">
+                            <h3>${acc.name}</h3>
+                            <p>${acc.details}</p>
+                            <span class="badge ${acc.class.includes('completed') ? 'completed' : ''}">${acc.status}</span>
+                        </div>
+                    `;
+                });
+            } catch (err) {
+                console.log("Using default HTML layout (data.json blocked locally). Everything works!");
+            }
+        }
 
-        <!-- Top Accomplishments -->
-        <section class="section">
-            <h2>Top Accomplishments</h2>
-            <div class="grid">
-                <div class="card demon-card hard">
-                    <h3>Future Funk</h3>
-                    <p>Progress: 55-100% & 16-54%</p>
-                    <span class="badge">In Progress</span>
-                </div>
-                <div class="card demon-card medium">
-                    <h3>B</h3>
-                    <p>Att: 1,200 | Fluked from 65%</p>
-                    <span class="badge completed">Completed</span>
-                </div>
-                <div class="card demon-card easy">
-                    <h3>The Nightmare</h3>
-                    <p>First ever Demon!</p>
-                    <span class="badge completed">Completed</span>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <footer>
-        <p>Made with determination and muscle memory | © 2026</p>
-    </footer>
-
+        window.onload = loadWebsiteData;
+    </script>
 </body>
 </html>
