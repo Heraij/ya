@@ -49,53 +49,62 @@
     </main>
 
     <script>
-        async function loadLevelData() {
-            // 1. Get the level ID from the URL parameter (e.g., ?id=nine-circles)
-            const urlParams = new URLSearchParams(window.location.search);
-            const levelId = urlParams.get('id');
+    async function loadLevelData() {
+        // 1. Grab the ?rank=X value from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const rankParam = urlParams.get('rank');
 
-            if (!levelId) {
-                document.getElementById('level-name').innerText = "Level Not Found";
+        if (!rankParam) {
+            document.getElementById('level-name').innerText = "No rank specified.";
+            return;
+        }
+
+        // Convert the string rank (e.g., "1") into an array index integer (e.g., 0)
+        const targetIndex = parseInt(rankParam, 10) - 1;
+
+        try {
+            // 2. Fetch your clean data.json file
+            const response = await fetch('data.json');
+            const data = await response.json();
+            const list = data.hardest_completions;
+
+            // 3. Make sure the rank actually exists in your array
+            if (targetIndex < 0 || targetIndex >= list.length) {
+                document.getElementById('level-name').innerText = `Rank #${rankParam} Not Found`;
                 return;
             }
 
-            try {
-                // 2. Fetch data.json
-                const response = await fetch('data.json');
-                const data = await response.json();
-                
-                // 3. Find the matching level object
-                const level = data.hardest_completions.find(l => l.id === levelId);
+            // Pull the level details using the array index position
+            const level = list[targetIndex];
 
-                if (!level) {
-                    document.getElementById('level-name').innerText = "Level Not Found";
-                    return;
-                }
-
-                // 4. Inject data into the page HTML elements
-                document.title = `${level.name} | Details`;
-                document.getElementById('level-name').innerText = level.name;
-                document.getElementById('level-author').innerText = `by ${level.author}`;
-                document.getElementById('stat-difficulty').innerText = level.difficulty;
-                document.getElementById('stat-attempts').innerText = level.attempts;
-                
-                if (level.description) {
-                    document.getElementById('level-description').innerText = level.description;
-                }
-
-                // 5. Embed the YouTube video if a video_id exists
-                if (level.video_id) {
-                    document.getElementById('video-frame').src = `https://www.youtube.com/embed/${level.video_id}`;
-                    document.getElementById('video-wrapper').style.display = 'block';
-                }
-
-            } catch (error) {
-                console.error("Error loading level details:", error);
-                document.getElementById('level-name').innerText = "Error loading details.";
+            // 4. Inject data into the template elements
+            document.title = `#${rankParam} - ${level.name} | Details`;
+            document.getElementById('level-name').innerText = `#${rankParam}. ${level.name}`;
+            document.getElementById('level-author').innerText = `by ${level.author}`;
+            document.getElementById('stat-difficulty').innerText = level.difficulty;
+            document.getElementById('stat-attempts').innerText = level.attempts;
+            
+            if (level.description) {
+                document.getElementById('level-description').innerText = level.description;
+            } else {
+                document.getElementById('level-description').innerText = "No description provided yet.";
             }
-        }
 
-        window.onload = loadLevelData;
-    </script>
+            // 5. Setup the video embed if available
+            if (level.video_id) {
+                document.getElementById('video-frame').src = `https://www.youtube.com/embed/${level.video_id}`;
+                document.getElementById('video-wrapper').style.display = 'block';
+            } else {
+                document.getElementById('video-wrapper').style.display = 'none';
+            }
+
+        } catch (error) {
+            console.error("Error loading level details:", error);
+            document.getElementById('level-name').innerText = "Error loading details.";
+        }
+    }
+
+    window.onload = loadLevelData;
+</script>
 </body>
 </html>
