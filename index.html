@@ -146,105 +146,125 @@
     </footer>
 
     <script>
-        const backupData = {
-            "current_projects": [
-                {
-                    "name": "Future Funk",
-                    "author": "JonathanGD",
-                    "difficulty": "Hard Demon",
-                    "progress_text": "16-54%, 55-100%",
-                    "runs": ["0-68", "55-100"],
-                    "note": "Wayy to quick progress, something bout to happen."
-                }
-            ],
-            "top_accomplishments": [
-                {
-                    "name": "Future Funk",
-                    "details": "Progress: 55-100% & 16-54%",
-                    "status": "In Progress",
-                    "class": "hard"
-                },
-                {
-                    "name": "B",
-                    "details": "Att: 1,200 | Fluked from 65%",
-                    "status": "Completed",
-                    "class": "medium completed"
-                },
-                {
-                    "name": "The Nightmare",
-                    "details": "First ever Demon!",
-                    "status": "Completed",
-                    "class": "easy completed"
-                }
-            ]
-        };
+    const backupData = {
+        "current_projects": [
+            {
+                "name": "Future Funk",
+                "author": "JonathanGD",
+                "difficulty": "Hard Demon",
+                "progress_text": "16-54%, 55-100%",
+                "runs": ["0-68", "55-100"],
+                "note": "Wayy to quick progress, something bout to happen."
+            }
+        ],
+        "top_accomplishments": [
+            {
+                "name": "Future Funk",
+                "details": "Progress: 55-100% & 16-54%",
+                "status": "In Progress",
+                "class": "hard"
+            },
+            {
+                "name": "B",
+                "details": "Att: 1,200 | Fluked from 65%",
+                "status": "Completed",
+                "class": "medium completed"
+            },
+            {
+                "name": "The Nightmare",
+                "details": "First ever Demon!",
+                "status": "Completed",
+                "class": "easy completed"
+            }
+        ]
+    };
 
-        function renderContent(localData) {
-            // Render Dynamic Projects
-            const projectsContainer = document.getElementById('projects-list');
-            projectsContainer.innerHTML = '';
+    function renderContent(localData) {
+        // Render Dynamic Projects
+        const projectsContainer = document.getElementById('projects-list');
+        projectsContainer.innerHTML = '';
 
-            localData.current_projects.forEach(proj => {
-                // Parse your data structure cleanly. High score defaults safely to 68%.
-                const highPercentage = 68; 
-                
-                projectsContainer.innerHTML += `
-                    <div class="card project-card">
-                        <h3>${proj.name}</h3>
-                        <p class="author">by ${proj.author} (${proj.difficulty})</p>
-                        <div class="progress-container">
-                            <p>Current Progress: <strong>${proj.progress_text || '16-54%, 55-100%'}</strong></p>
-                            
-                            <div class="progress-bar-container">
-                                <div class="progress-bar-fill" style="width: ${highPercentage}%;"></div>
-                            </div>
-                            
-                            <p class="note">${proj.note}</p>
+        // Safe check to make sure current_projects array exists
+        const projects = localData.current_projects || backupData.current_projects;
+
+        projects.forEach(proj => {
+            // 1. Automatically calculate your percentage width from your first run (e.g. "0-68" -> 68)
+            let highPercentage = 68; 
+            if (proj.runs && proj.runs[0]) {
+                const firstRun = proj.runs[0];
+                if (firstRun.includes('-')) {
+                    highPercentage = parseInt(firstRun.split('-')[1], 10);
+                } else {
+                    highPercentage = parseInt(firstRun, 10);
+                }
+            }
+
+            // 2. Safely read difficulty whether your JSON uses 'difficulty' or 'demon-type'
+            const displayDifficulty = proj.difficulty || (proj["demon-type"] ? proj["demon-type"] + " Demon" : "Demon");
+
+            projectsContainer.innerHTML += `
+                <div class="card project-card">
+                    <h3>${proj.name}</h3>
+                    <p class="author">by ${proj.author} (${displayDifficulty})</p>
+                    <div class="progress-container">
+                        <p>Current Progress: <strong>${proj.progress_text || 'In Progress'}</strong></p>
+                        
+                        <div class="progress-bar-container">
+                            <div class="progress-bar-fill" style="width: ${highPercentage}%;"></div>
                         </div>
+                        
+                        <p class="note">${proj.note}</p>
                     </div>
-                `;
-            });
+                </div>
+            `;
+        });
 
-            // Render Top Accomplishments Grid
-            const accomplishmentsGrid = document.getElementById('accomplishments-grid');
-            accomplishmentsGrid.innerHTML = ''; 
-            localData.top_accomplishments.forEach(acc => {
-                accomplishmentsGrid.innerHTML += `
-                    <div class="card demon-card ${acc.class.split(' ')[0]}">
-                        <h3>${acc.name}</h3>
-                        <p>${acc.details}</p>
-                        <span class="badge ${acc.class.includes('completed') ? 'completed' : ''}">${acc.status}</span>
-                    </div>
-                `;
-            });
+        // Render Top Accomplishments Grid
+        const accomplishmentsGrid = document.getElementById('accomplishments-grid');
+        accomplishmentsGrid.innerHTML = ''; 
+        
+        const accomplishments = localData.top_accomplishments || backupData.top_accomplishments;
+        
+        accomplishments.forEach(acc => {
+            const fallbackClass = acc.class ? acc.class.split(' ')[0] : 'hard';
+            const isCompleted = acc.class && acc.class.includes('completed');
+
+            accomplishmentsGrid.innerHTML += `
+                <div class="card demon-card ${fallbackClass}">
+                    <h3>${acc.name}</h3>
+                    <p>${acc.details}</p>
+                    <span class="badge ${isCompleted ? 'completed' : ''}">${acc.status}</span>
+                </div>
+            `;
+        });
+    }
+
+    // Main loader function
+    async function loadWebsiteData() {
+        try {
+            const gdResponse = await fetch('https://gdbrowser.com/api/profile/creatorplus100');
+            if (gdResponse.ok) {
+                const gdData = await gdResponse.json();
+                document.getElementById('gd-stars').innerText = gdData.stars.toLocaleString();
+                document.getElementById('gd-demons').innerText = gdData.demons.toLocaleString();
+                document.getElementById('gd-cp').innerText = gdData.creatorPoints.toLocaleString();
+            }
+        } catch (err) {
+            console.log("Using default fallback statistics locally.");
         }
 
-        // Main loader function
-        async function loadWebsiteData() {
-            try {
-                const gdResponse = await fetch('https://gdbrowser.com/api/profile/creatorplus100');
-                if (gdResponse.ok) {
-                    const gdData = await gdResponse.json();
-                    document.getElementById('gd-stars').innerText = gdData.stars.toLocaleString();
-                    document.getElementById('gd-demons').innerText = gdData.demons.toLocaleString();
-                    document.getElementById('gd-cp').innerText = gdData.creatorPoints.toLocaleString();
-                }
-            } catch (err) {
-                console.log("Using default fallback statistics locally.");
-            }
-
-            try {
-                const jsonResponse = await fetch('data.json');
-                if (!jsonResponse.ok) throw new Error();
-                const localData = await jsonResponse.json();
-                renderContent(localData);
-            } catch (err) {
-                console.log("Using backupData data structure seamlessly.");
-                renderContent(backupData);
-            }
+        try {
+            const jsonResponse = await fetch('data.json');
+            if (!jsonResponse.ok) throw new Error();
+            const localData = await jsonResponse.json();
+            renderContent(localData);
+        } catch (err) {
+            console.error("Using backupData fallback data. Details:", err);
+            renderContent(backupData);
         }
+    }
 
-        window.onload = loadWebsiteData;
-    </script>
+    window.onload = loadWebsiteData;
+</script>
 </body>
 </html>
