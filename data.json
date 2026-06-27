@@ -1,0 +1,33 @@
+{
+  "current_projects": [
+    {
+      "name": "Future Funk",
+      "author": "JonathanGD",
+      "difficulty": "Hard Demon",
+      "progress_text": "16-54%, 55-100%",
+      "bar_width": "45%",
+      "bar_offset": "55%",
+      "note": "Using the Blitzkrieg Method. Destroying it chunk by chunk!"
+    }
+  ],
+  "top_accomplishments": [
+    {
+      "name": "Nine Circles",
+      "details": "Att: 778 | First Hard demon!",
+      "status": "In Progress",
+      "class": "hard"
+    },
+    {
+      "name": "Sakupen Egg",
+      "details": "Att: 650 | Ez",
+      "status": "Completed",
+      "class": "medium completed"
+    },
+    {
+      "name": "Reanimation",
+      "details": "Att: 119 | First Medium!",
+      "status": "Completed",
+      "class": "medium completed"
+    }
+  ]
+}
