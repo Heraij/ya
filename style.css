@@ -1,3 +1,53 @@
+/* ==========================================================================
+   SPECIAL LEVEL THEMES (Overriding standard cards)
+   ========================================================================== */
+
+/* 🔥 THEME HELL (Nine Circles - Crimson/Orange Dark Glow) */
+.theme-hell {
+    border-left: 6px solid #ff003c !important;
+    background: linear-gradient(135deg, #150508 0%, #1e1214 100%) !important;
+    box-shadow: 0 0 15px rgba(255, 0, 60, 0.15) !important;
+}
+.theme-hell h3 a, .theme-hell h3 {
+    color: #ff3366 !important;
+    text-shadow: 0 0 8px rgba(255, 51, 102, 0.4);
+}
+.theme-hell .list-rank {
+    color: #ff003c !important;
+}
+/* Turn its buttons into deep crimson red */
+.theme-hell .watch-btn {
+    background: #ff003c !important;
+    box-shadow: 0 4px 10px rgba(255, 0, 60, 0.3) !important;
+}
+.theme-hell .watch-btn:hover {
+    background: #b3002a !important;
+    box-shadow: 0 6px 15px rgba(255, 0, 60, 0.5) !important;
+}
+
+
+/* 🌀 THEME VORTEX (Paracosm Circles - Electric Purple Neon) */
+.theme-vortex {
+    border-left: 6px solid #a855f7 !important;
+    background: linear-gradient(135deg, #0d0614 0%, #16101e 100%) !important;
+    box-shadow: 0 0 15px rgba(168, 85, 247, 0.15) !important;
+}
+.theme-vortex h3 a, .theme-vortex h3 {
+    color: #c084fc !important;
+    text-shadow: 0 0 8px rgba(192, 132, 252, 0.4);
+}
+.theme-vortex .list-rank {
+    color: #a855f7 !important;
+}
+/* Turn its buttons into clean electric violet purple */
+.theme-vortex .watch-btn {
+    background: #a855f7 !important;
+    box-shadow: 0 4px 10px rgba(168, 85, 247, 0.3) !important;
+}
+.theme-vortex .watch-btn:hover {
+    background: #7e22ce !important;
+    box-shadow: 0 6px 15px rgba(168, 85, 247, 0.5) !important;
+}
 /* Target the primary watch/details buttons in your list layout */
 .watch-btn {
     display: inline-block;
