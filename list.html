@@ -49,7 +49,7 @@
         .border-hard { border-left-color: #ff00ff !important; }
         .border-insane { border-left-color: #ff3300 !important; }
         .border-extreme { border-left-color: #880000 !important; }
-        
+         
         .back-nav {
             margin-bottom: 20px;
             display: inline-block;
@@ -62,7 +62,7 @@
 <body>
 
     <main class="container" style="margin-top: 40px;">
-        
+         
         <section class="section">
             <h2>CreatorPlus List</h2>
             <div id="demon-list-container">
@@ -78,13 +78,12 @@
             { "name": "Loading...", "author": "Jax", "difficulty": "Easy Demon", "tier": "easy", "attempts": "340", "video_id": "" }
         ];
 
+        // This function handles updating the page with your real data safely
         function renderList(completions) {
             const container = document.getElementById('demon-list-container');
             container.innerHTML = '';
 
-            // Using (item, index) lets us track exactly where the level sits top-to-bottom
             completions.forEach((item, index) => {
-                // Since array index starts at 0, adding 1 turns it into #1, #2, #3, etc.
                 const dynamicRank = index + 1;
 
                 let videoButton = '';
@@ -92,16 +91,20 @@
                     videoButton = `<a href="https://youtu.be/${item.video_id}" target="_blank" class="watch-btn">Watch Video</a>`;
                 }
 
+                // The dynamic URL query linking logic is perfectly self-contained here now
                 container.innerHTML += `
                     <div class="card list-item border-${item.tier}">
                         <div class="list-rank">#${dynamicRank}</div>
                         <div class="list-info">
-                            <h3>${item.name}</h3>
+                            <h3><a href="level.html?rank=${dynamicRank}" style="color: inherit; text-decoration: none;">${item.name}</a></h3>
                             <div class="list-meta">
                                 by ${item.author} — <strong>${item.difficulty}</strong> (${item.attempts} Attempts)
                             </div>
                         </div>
-                        ${videoButton}
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <a href="level.html?rank=${dynamicRank}" class="watch-btn" style="background: #3b82f6;">View Details</a>
+                            ${videoButton}
+                        </div>
                     </div>
                 `;
             });
@@ -114,33 +117,10 @@
                 const data = await response.json();
                 renderList(data.hardest_completions || fallbackList);
             } catch (err) {
+                console.error("Could not fetch data.json, using fallback standard entries.", err);
                 renderList(fallbackList);
             }
         }
-        // Replace the inside of your completions.forEach loop in list.html:
-const dynamicRank = index + 1;
-
-let videoButton = '';
-if (item.video_id) {
-    videoButton = `<a href="https://youtu.be/${item.video_id}" target="_blank" class="watch-btn">Watch Video</a>`;
-}
-
-container.innerHTML += `
-    <div class="card list-item border-${item.tier}">
-        <div class="list-rank">#${dynamicRank}</div>
-        <div class="list-info">
-            <!-- Link using the dynamic rank number -->
-            <h3><a href="level.html?rank=${dynamicRank}" style="color: inherit; text-decoration: none;">${item.name}</a></h3>
-            <div class="list-meta">
-                by ${item.author} — <strong>${item.difficulty}</strong>
-            </div>
-        </div>
-        <div style="display: flex; gap: 10px; align-items: center;">
-            <a href="level.html?rank=${dynamicRank}" class="watch-btn" style="background: #3b82f6;">View Details</a>
-            ${videoButton}
-        </div>
-    </div>
-`;
 
         window.onload = initList;
     </script>
