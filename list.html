@@ -3,134 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hardest Completions | Creator+</title>
+    <title>My Demon List</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        /* Custom Styles specifically for the Demon List */
-        .list-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 20px;
-            margin-bottom: 15px;
-            background: #1e1e24;
-            border-left: 5px solid #ff00ff; /* Dynamic fallback border */
-        }
-        .list-rank {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #94a3b8;
-            margin-right: 20px;
-            min-width: 40px;
-        }
-        .list-info {
-            flex-grow: 1;
-        }
-        .list-info h3 {
-            margin: 0 0 5px 0;
-            font-size: 1.4rem;
-        }
-        .list-meta {
-            color: #94a3b8;
-            font-size: 0.9rem;
-        }
-        .watch-btn {
-            background: #ff0000;
-            color: white;
-            padding: 8px 15px;
-            border-radius: 4px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 0.85rem;
-        }
-        /* Demon Tier Border Accents */
-        .border-easy { border-left-color: #00ff44 !important; }
-        .border-medium { border-left-color: #00bbff !important; }
-        .border-hard { border-left-color: #ff00ff !important; }
-        .border-insane { border-left-color: #ff3300 !important; }
-        .border-extreme { border-left-color: #880000 !important; }
-         
-        .back-nav {
-            margin-bottom: 20px;
-            display: inline-block;
-            color: #3b82f6;
-            text-decoration: none;
-            font-weight: bold;
-        }
-    </style>
 </head>
 <body>
 
-    <main class="container" style="margin-top: 40px;">
-         
-        <section class="section">
-            <h2>CreatorPlus List</h2>
-            <div id="demon-list-container">
-                <!-- JavaScript will inject your completions list here dynamically -->
-            </div>
-        </section>
+    <main class="container">
+        <a href="index.html" class="back-link" style="display: inline-block; margin-bottom: 20px; color: #3b82f6; text-decoration: none; font-weight: bold;">← Back to Portfolio</a>
+        
+        <h1 class="page-title">Hardest Completions</h1>
+        <p class="page-subtitle">My personal Geometry Dash progression milestone tracker.</p>
+
+        <div id="list-container">
+            <p style="color: #94a3b8;">Loading list data...</p>
+        </div>
     </main>
 
     <script>
-        // Updated backup fallback data without hardcoded ranks
+        // Fallback list just in case data.json can't be fetched locally
         const fallbackList = [
-            { "name": "Loading...", "author": "MotleyOrc", "difficulty": "Medium Demon", "tier": "medium", "attempts": "1,200", "video_id": "" },
-            { "name": "Loading...", "author": "Jax", "difficulty": "Easy Demon", "tier": "easy", "attempts": "340", "video_id": "" }
+            { "name": "Nine Circles", "author": "Zobros", "difficulty": "Hard Demon", "tier": "hard", "attempts": "778", "video_id": "aTObXPHFEPw" },
+            { "name": "Paracosm Circles", "author": "N1XO", "difficulty": "Medium Demon", "tier": "medium", "attempts": "429", "video_id": "9u_fkpAqdOY" }
         ];
 
-        // This function handles updating the page with your real data safely
         function renderList(completions) {
-            const container = document.getElementById('demon-list-container');
-            container.innerHTML = '';
+            const container = document.getElementById('list-container');
+            container.innerHTML = ''; // Clear out loading text
+
+            if (!completions || completions.length === 0) {
+                container.innerHTML = '<p style="color: #ef4444;">No completions found.</p>';
+                return;
+            }
 
             completions.forEach((item, index) => {
-    const dynamicRank = index + 1;
+                const dynamicRank = index + 1;
 
-    // Determine if this specific card deserves a theme override class
-    let themeClass = `border-${item.tier}`; // Standard fallback (e.g., border-hard)
-    
-    if (item.name.toLowerCase() === "nine circles") {
-        themeClass = "theme-hell";
-    } else if (item.name.toLowerCase() === "paracosm circles") {
-        themeClass = "theme-vortex";
-    }
+                // Determine if this specific card deserves a theme override class
+                let themeClass = `border-${item.tier}`; // Standard fallback (e.g., border-hard)
+                
+                if (item.name && item.name.toLowerCase() === "nine circles") {
+                    themeClass = "theme-hell";
+                } else if (item.name && item.name.toLowerCase() === "paracosm circles") {
+                    themeClass = "theme-vortex";
+                }
 
-    let videoButton = '';
-    if (item.video_id) {
-        videoButton = `<a href="https://youtu.be/${item.video_id}" target="_blank" class="watch-btn">Watch Video</a>`;
-    }
+                // Setup the Watch Video button conditionally if video_id exists
+                let videoButton = '';
+                if (item.video_id) {
+                    videoButton = `<a href="https://youtu.be/${item.video_id}" target="_blank" class="watch-btn">Watch Video</a>`;
+                }
 
-    // Notice we use the themeClass variable in the div layout now
-    container.innerHTML += `
-        <div class="card list-item ${themeClass}">
-            <div class="list-rank">#${dynamicRank}</div>
-            <div class="list-info">
-                <h3><a href="level.html?rank=${dynamicRank}" style="color: inherit; text-decoration: none;">${item.name}</a></h3>
-                <div class="list-meta">
-                    by ${item.author} — <strong>${item.difficulty}</strong> (${item.attempts} Attempts)
-                </div>
-            </div>
-            <div style="display: flex; gap: 10px; align-items: center;">
-                <a href="level.html?rank=${dynamicRank}" class="watch-btn" style="background: #3b82f6;">View Details</a>
-                ${videoButton}
-            </div>
-        </div>
-    `;
-});
+                // Inject the card layout safely
+                container.innerHTML += `
+                    <div class="card list-item ${themeClass}">
+                        <div class="list-rank">#${dynamicRank}</div>
+                        <div class="list-info">
+                            <h3><a href="level.html?rank=${dynamicRank}" style="color: inherit; text-decoration: none;">${item.name}</a></h3>
+                            <div class="list-meta">
+                                by ${item.author} — <strong>${item.difficulty}</strong> (${item.attempts} Attempts)
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                            <a href="level.html?rank=${dynamicRank}" class="watch-btn" style="background: #3b82f6;">View Details</a>
+                            ${videoButton}
+                        </div>
+                    </div>
+                `;
+            });
+        }
 
-        async function initList() {
+        async function loadListData() {
             try {
                 const response = await fetch('data.json');
-                if (!response.ok) throw new Error();
+                if (!response.ok) throw new Error("File fetch failed");
                 const data = await response.json();
-                renderList(data.hardest_completions || fallbackList);
-            } catch (err) {
-                console.error("Could not fetch data.json, using fallback standard entries.", err);
+                
+                // Read the hardest_completions array from your JSON structure
+                renderList(data.hardest_completions);
+            } catch (error) {
+                console.warn("Could not load data.json, using fallback list. Details:", error);
                 renderList(fallbackList);
             }
         }
 
-        window.onload = initList;
+        window.onload = loadListData;
     </script>
 </body>
 </html>
