@@ -1,3 +1,9 @@
+/* Dynamic Demon Colors for Progress Bars */
+.progress-bar.easy-demon    { background: #00ff44; }
+.progress-bar.medium-demon  { background: #00bbff; }
+.progress-bar.hard-demon    { background: #ff00ff; }
+.progress-bar.insane-demon  { background: #ff3300; }
+.progress-bar.extreme-demon { background: #880000; }
 /* YouTube Section Styling */
 .video-wrapper {
     position: relative;
