@@ -1,4 +1,30 @@
 {
+  "hardest_completions": [
+    {
+      "name": "Future Funk",
+      "author": "JonathanGD",
+      "difficulty": "Hard Demon",
+      "tier": "hard",
+      "attempts": "Coming Soon",
+      "video_id": "YOUR_VIDEO_ID"
+    },
+    {
+      "name": "B",
+      "author": "MotleyOrc",
+      "difficulty": "Medium Demon",
+      "tier": "medium",
+      "attempts": "1,200",
+      "video_id": ""
+    },
+    {
+      "name": "The Nightmare",
+      "author": "Jax",
+      "difficulty": "Easy Demon",
+      "tier": "easy",
+      "attempts": "340",
+      "video_id": ""
+    }
+  ]
   "current_projects": [
     {
       "name": "Future Funk",
