@@ -1,4 +1,54 @@
 /* ==========================================================================
+   GLOBAL BUTTON STYLING (Restoring styles to list.html & across site)
+   ========================================================================== */
+
+.watch-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-decoration: none;
+    color: #ffffff !important;
+    background: #ef4444; /* Default watch button color (Red) */
+    box-shadow: 0 4px 10px rgba(239, 68, 68, 0.2);
+    transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+    border: none;
+}
+
+/* Specific background check styling override for the blue View Details button */
+.watch-btn[style*="background: #3b82f6"],
+.watch-btn[style*="background:#3b82f6"] {
+    background: #3b82f6 !important;
+    box-shadow: 0 4px 10px rgba(59, 130, 246, 0.2) !important;
+}
+
+/* Hover States */
+.watch-btn:hover {
+    transform: translateY(-2px);
+}
+
+/* Red Button Hover */
+.watch-btn:not([style*="background"]):hover {
+    background: #dc2626 !important;
+    box-shadow: 0 6px 15px rgba(239, 68, 68, 0.4);
+}
+
+/* Blue Button Hover */
+.watch-btn[style*="background: #3b82f6"]:hover,
+.watch-btn[style*="background:#3b82f6"]:hover {
+    background: #2563eb !important;
+    box-shadow: 0 6px 15px rgba(59, 130, 246, 0.4) !important;
+}
+
+/* Click Animation State */
+.watch-btn:active {
+    transform: translateY(1px);
+}
+/* ==========================================================================
    SPECIAL LEVEL THEMES (Overriding standard cards)
    ========================================================================== */
 
