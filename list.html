@@ -20,7 +20,6 @@
     </main>
 
     <script>
-        // Fallback list just in case data.json can't be fetched locally
         const fallbackList = [
             { "name": "Nine Circles", "author": "Zobros", "difficulty": "Hard Demon", "tier": "hard", "attempts": "778", "video_id": "aTObXPHFEPw" },
             { "name": "Paracosm Circles", "author": "N1XO", "difficulty": "Medium Demon", "tier": "medium", "attempts": "429", "video_id": "9u_fkpAqdOY" }
@@ -28,7 +27,7 @@
 
         function renderList(completions) {
             const container = document.getElementById('list-container');
-            container.innerHTML = ''; // Clear out loading text
+            container.innerHTML = '';
 
             if (!completions || completions.length === 0) {
                 container.innerHTML = '<p style="color: #ef4444;">No completions found.</p>';
@@ -37,33 +36,25 @@
 
             completions.forEach((item, index) => {
                 const dynamicRank = index + 1;
+                let themeClass = `border-${item.tier}`; 
 
-                // Determine if this specific card deserves a theme override class
-                let themeClass = `border-${item.tier}`; // Standard fallback (e.g., border-hard)
-                
-                if (item.name && item.name.toLowerCase() === "nine circles") {
-                    themeClass = "theme-hell";
-                } else if (item.name && item.name.toLowerCase() === "paracosm circles") {
-                    themeClass = "theme-vortex";
-                }
-
-                // Setup the Watch Video button conditionally if video_id exists
                 let videoButton = '';
                 if (item.video_id) {
                     videoButton = `<a href="https://youtu.be/${item.video_id}" target="_blank" class="watch-btn">Watch Video</a>`;
                 }
 
-                // Inject the card layout safely
                 container.innerHTML += `
-                    <div class="card list-item ${themeClass}">
-                        <div class="list-rank">#${dynamicRank}</div>
-                        <div class="list-info">
-                            <h3><a href="level.html?rank=${dynamicRank}" style="color: inherit; text-decoration: none;">${item.name}</a></h3>
-                            <div class="list-meta">
-                                by ${item.author} — <strong>${item.difficulty}</strong> (${item.attempts} Attempts)
+                    <div class="card list-item ${themeClass}" style="display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 20px; margin-bottom: 15px;">
+                        <div style="display: flex; align-items: center; gap: 20px;">
+                            <div class="list-rank" style="font-size: 1.5rem; font-weight: bold; min-width: 40px;">#${dynamicRank}</div>
+                            <div class="list-info">
+                                <h3 style="margin: 0 0 5px 0;"><a href="level.html?rank=${dynamicRank}" style="color: inherit; text-decoration: none;">${item.name}</a></h3>
+                                <div class="list-meta" style="color: #94a3b8; font-size: 0.9rem;">
+                                    by ${item.author} — <strong>${item.difficulty}</strong> (${item.attempts} Attempts)
+                                </div>
                             </div>
                         </div>
-                        <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                        <div style="display: flex; gap: 10px; shrink: 0;">
                             <a href="level.html?rank=${dynamicRank}" class="watch-btn" style="background: #3b82f6;">View Details</a>
                             ${videoButton}
                         </div>
@@ -75,13 +66,10 @@
         async function loadListData() {
             try {
                 const response = await fetch('data.json');
-                if (!response.ok) throw new Error("File fetch failed");
+                if (!response.ok) throw new Error();
                 const data = await response.json();
-                
-                // Read the hardest_completions array from your JSON structure
                 renderList(data.hardest_completions);
             } catch (error) {
-                console.warn("Could not load data.json, using fallback list. Details:", error);
                 renderList(fallbackList);
             }
         }
