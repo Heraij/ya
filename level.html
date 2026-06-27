@@ -6,19 +6,36 @@
     <title>Level Details</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        .level-container { max-width: 800px; margin: 40px auto; padding: 20px; }
+        .level-container { max-width: 800px; margin: 40px auto; padding: 30px; border-radius: 12px; transition: all 0.3s ease; }
         .back-link { display: inline-block; margin-bottom: 20px; color: #3b82f6; text-decoration: none; font-weight: bold; }
         .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; margin-top: 20px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin: 20px 0; }
-        .stat-box { background: #1e1e24; padding: 15px; border-radius: 6px; text-align: center; border-bottom: 3px solid #3b82f6; }
+        .stat-box { background: #1e1e24; padding: 15px; border-radius: 6px; text-align: center; border-bottom: 3px solid #3b82f6; transition: all 0.3s ease; }
         .stat-box span { display: block; font-size: 0.85rem; color: #94a3b8; text-transform: uppercase; }
         .stat-box strong { font-size: 1.4rem; color: #fff; }
+
+        /* 🔥 DYNAMIC THEME OVERRIDES FOR LEVEL PAGE */
+        .theme-hell {
+            background: linear-gradient(135deg, #150508 0%, #1e1214 100%) !important;
+            border: 2px solid #ff003c !important;
+            box-shadow: 0 0 25px rgba(255, 0, 60, 0.25) !important;
+        }
+        .theme-hell #level-name { color: #ff3366 !important; text-shadow: 0 0 8px rgba(255, 51, 102, 0.4); }
+        .theme-hell .stat-box { background: #251014 !important; border-bottom-color: #ff003c !important; }
+
+        .theme-vortex {
+            background: linear-gradient(135deg, #0d0614 0%, #16101e 100%) !important;
+            border: 2px solid #a855f7 !important;
+            box-shadow: 0 0 25px rgba(168, 85, 247, 0.25) !important;
+        }
+        .theme-vortex #level-name { color: #c084fc !important; text-shadow: 0 0 8px rgba(192, 132, 252, 0.4); }
+        .theme-vortex .stat-box { background: #190e24 !important; border-bottom-color: #a855f7 !important; }
     </style>
 </head>
 <body>
 
-    <main class="level-container">
+    <main class="level-container card" id="main-level-card">
         <a href="list.html" class="back-link">Back to Demon List</a>
         
         <h1 id="level-name">Loading Level...</h1>
@@ -49,7 +66,6 @@
 
     <script>
     async function loadLevelData() {
-        // 1. Grab the ?rank=X value from the URL
         const urlParams = new URLSearchParams(window.location.search);
         const rankParam = urlParams.get('rank');
 
@@ -58,25 +74,28 @@
             return;
         }
 
-        // Convert the string rank (e.g., "1") into an array index integer (e.g., 0)
         const targetIndex = parseInt(rankParam, 10) - 1;
 
         try {
-            // 2. Fetch your clean data.json file
             const response = await fetch('data.json');
             const data = await response.json();
             const list = data.hardest_completions;
 
-            // 3. Make sure the rank actually exists in your array
             if (targetIndex < 0 || targetIndex >= list.length) {
                 document.getElementById('level-name').innerText = `Rank #${rankParam} Not Found`;
                 return;
             }
 
-            // Pull the level details using the array index position
             const level = list[targetIndex];
+            const pageCard = document.getElementById('main-level-card');
 
-            // 4. Inject data into the template elements
+            // 🎯 APPLY SPECIAL SUBPAGE STYLING OVERRIDES DYNAMICALLY
+            if (level.name.toLowerCase() === "nine circles") {
+                pageCard.classList.add('theme-hell');
+            } else if (level.name.toLowerCase() === "paracosm circles") {
+                pageCard.classList.add('theme-vortex');
+            }
+
             document.title = `#${rankParam} - ${level.name} | Details`;
             document.getElementById('level-name').innerText = `#${rankParam}. ${level.name}`;
             document.getElementById('level-author').innerText = `by ${level.author}`;
@@ -85,16 +104,11 @@
             
             if (level.description) {
                 document.getElementById('level-description').innerText = level.description;
-            } else {
-                document.getElementById('level-description').innerText = "No description provided yet.";
             }
 
-            // 5. Setup the video embed if available
             if (level.video_id) {
                 document.getElementById('video-frame').src = `https://www.youtube.com/embed/${level.video_id}`;
                 document.getElementById('video-wrapper').style.display = 'block';
-            } else {
-                document.getElementById('video-wrapper').style.display = 'none';
             }
 
         } catch (error) {
