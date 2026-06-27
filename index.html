@@ -236,9 +236,10 @@
                     const offset = start;
 
                     // Adding the individual progress bar piece
+                    // Adding the individual progress bar piece with pure inline rainbow handling
                     cardHtml += `
-                        <div class="progress-bar ${colorClass}" 
-                             style="width: ${width}%; margin-left: ${offset}%; position: absolute; top:0; left:0; height:100%;">
+                        <div class="progress-bar" 
+                             style="width: ${width}%; margin-left: ${offset}%; position: absolute; top:0; left:0; height:100%; background: ${runColor} !important;">
                         </div>
                     `;
                 });
