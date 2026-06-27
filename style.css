@@ -1,3 +1,59 @@
+/* Styling for the new list navigation button */
+.nav-list-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    color: #ffffff;
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.95rem;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.nav-list-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+}
+
+.nav-list-btn svg {
+    transition: transform 0.2s ease;
+}
+
+.nav-list-btn:hover svg {
+    transform: translateX(4px); /* Subtle arrow kick on hover */
+}
+
+/* --- Blending Progress Bar Styles --- */
+.progress-bar-container {
+    width: 100%;
+    background: #141417; /* Deep background layer */
+    border-radius: 999px;
+    padding: 4px;
+    box-sizing: border-box;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    margin: 15px 0;
+}
+
+.progress-bar-fill {
+    height: 16px;
+    border-radius: 999px;
+    /* This creates a blending, colorful shifting layout */
+    background: linear-gradient(90deg, #ff007f, #7000ff, #00bbff, #ff007f);
+    background-size: 300% 100%;
+    animation: blendGradient 6s linear infinite;
+    box-shadow: 0 0 12px rgba(112, 0, 255, 0.4);
+    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1); /* Clean loading snap */
+}
+
+/* The fluid color shifting animation */
+@keyframes blendGradient {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 300% 50%; }
+}
 /* Dynamic Demon Colors for Progress Bars */
 .progress-bar.easy-demon    { background: #00ff44; }
 .progress-bar.medium-demon  { background: #00bbff; }
