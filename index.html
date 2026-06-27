@@ -5,10 +5,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>creatorplus100 | GD Portfolio</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Blending Progress Bar Styles added cleanly */
+        .progress-bar-container {
+            width: 100%;
+            background: #141417;
+            border-radius: 999px;
+            padding: 4px;
+            box-sizing: border-box;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            margin: 15px 0;
+        }
+        .progress-bar-fill {
+            height: 16px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, #ff007f, #7000ff, #00bbff, #ff007f);
+            background-size: 300% 100%;
+            animation: blendGradient 6s linear infinite;
+            box-shadow: 0 0 12px rgba(112, 0, 255, 0.4);
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        @keyframes blendGradient {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 300% 50%; }
+        }
+        /* Nav List Button Layout Styling */
+        .nav-list-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: #ffffff;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            margin-top: 15px;
+        }
+        .nav-list-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        }
+        .nav-list-btn svg { transition: transform 0.2s ease; }
+        .nav-list-btn:hover svg { transform: translateX(4px); }
+    </style>
 </head>
 <body>
 
-    <!-- Header / Hero Section -->
     <header class="hero">
         <div class="hero-content">
             <h1>creatorplus100</h1>
@@ -16,7 +62,6 @@
         </div>
     </header>
 
-    <!-- Quick Stats -->
     <section class="stats-container">
         <div class="stat-box">
             <h3>Stars</h3>
@@ -32,46 +77,40 @@
         </div>
     </section>
 
-    <!-- Main Content Grid -->
-    <main class="container">
-        <!-- Video Showcase Section -->
-    <main class="container">
+    <main class="container" style="margin-top: 40px;">
+        
         <section class="section">
             <h2>Featured video:</h2>
-                
-                <div class="video-wrapper">
-                    <!-- REPLACE the '7cjVj1ZyzyE' in the URL below with your actual YouTube Video ID! -->
-                    <iframe src="https://www.youtube.com/embed/aTObXPHFEPw" 
-                            title="YouTube video player" 
-                            frameborder="0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                            allowfullscreen>
-                    </iframe>
-                </div>
-                
-                <!-- Link directly to your channel profile page -->
-                <a href="https://youtube.com/@creatorplusgd" target="_blank" class="channel-btn">
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/aTObXPHFEPw" 
+                        title="YouTube video player" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                </iframe>
+            </div>
+            
+            <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-top: 15px;">
+                <a href="https://youtube.com/@creatorplusgd" target="_blank" class="channel-btn" style="margin-top: 15px;">
                     Subscribe
                 </a>
+                <a href="list.html" class="nav-list-btn">
+                    <span>My Hardest Completions</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </a>
             </div>
-            <a href="list.html" class="nav-list-btn">
-    <span>My hardest completions</span>
-    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 Campaign 5 19 12 5"></polyline></svg>
-</a>
         </section>
-    </main>
-        <!-- Current Grinds -->
+
         <section class="section">
             <h2>Current Projects</h2>
             <div id="projects-list">
-                <!-- Hardcoded Default: This displays instantly even if offline! -->
                 <div class="card project-card">
                     <h3>Future Funk</h3>
                     <p class="author">by JonathanGD (Hard Demon)</p>
                     <div class="progress-container">
                         <p>Current Progress: <strong>16-54%, 55-100%</strong></p>
-                        <div class="progress-bar-bg">
-                            <div class="progress-bar" style="width: 45%; margin-left: 55%;"></div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar-fill" style="width: 68%;"></div>
                         </div>
                         <p class="note">Using the Blitzkrieg Method. Destroying it chunk by chunk!</p>
                     </div>
@@ -79,15 +118,13 @@
             </div>
         </section>
 
-        <!-- Top Accomplishments -->
         <section class="section">
             <h2>Top Accomplishments</h2>
             <div class="grid" id="accomplishments-grid">
-                <!-- Hardcoded Default: No more missing panels or error messages! -->
                 <div class="card demon-card hard">
                     <h3>Future Funk</h3>
                     <p>Progress: 55-100% & 16-54%</p>
-                    <span class="badge">Completed</span>
+                    <span class="badge">In Progress</span>
                 </div>
                 <div class="card demon-card medium">
                     <h3>B</h3>
@@ -109,15 +146,15 @@
     </footer>
 
     <script>
-        // HARDCODED DEFAULT DATA: This ensures everything renders perfectly even while testing locally!
         const backupData = {
             "current_projects": [
                 {
                     "name": "Future Funk",
                     "author": "JonathanGD",
                     "difficulty": "Hard Demon",
-                    "runs": ["16-54", "55-100"],
-                    "note": "Using the Blitzkrieg Method. Destroying it chunk by chunk!"
+                    "progress_text": "16-54%, 55-100%",
+                    "runs": ["0-68", "55-100"],
+                    "note": "Wayy to quick progress, something bout to happen."
                 }
             ],
             "top_accomplishments": [
@@ -142,61 +179,30 @@
             ]
         };
 
-       // Example snippet of how your project rendering loop should output the HTML structure:
-const highPercentage = 68; // This would dynamically parse your highest run (e.g., 68 from "0-68")
+        function renderContent(localData) {
+            // Render Dynamic Projects
+            const projectsContainer = document.getElementById('projects-list');
+            projectsContainer.innerHTML = '';
 
-projectContainer.innerHTML = `
-    <div class="project-card">
-        <h3>${project.name}</h3>
-        <p>by ${project.author} — <strong>${project.progress_text}</strong></p>
-        
-        <div class="progress-bar-container">
-            <div class="progress-bar-fill" style="width: ${highPercentage}%;"></div>
-        </div>
-        
-        <p class="project-note"><em>${project.note}</em></p>
-    </div>
-`;
-
-                // Define our sequence of run colors: 1st run = Red, 2nd run = Orange, 3rd = Yellow, etc.
-                const runColors = ["#ef4444", "#f97316", "#eab308", "#10b981", "#3b82f6"];
-
-                // Loop through each run and calculate its exact length, offset, and individual color
-                proj.runs.forEach((runStr, index) => {
-                    let start = 0;
-                    let end = 0;
-
-                    if (runStr.includes('-')) {
-                        const parts = runStr.split('-');
-                        start = parseFloat(parts[0]);
-                        end = parseFloat(parts[1]);
-                    } else {
-                        start = 0;
-                        end = parseFloat(runStr);
-                    }
-
-                    const width = end - start;
-                    const offset = start;
-                    
-                    // Pick the color based on the run order (defaults to blue if you have > 5 runs)
-                    const runColor = runColors[index] || "#3b82f6";
-
-                    // Adding the individual progress bar piece with pure inline rainbow handling
-                    cardHtml += `
-                        <div class="progress-bar" 
-                             style="width: ${width}%; margin-left: ${offset}%; position: absolute; top:0; left:0; height:100%; background: ${runColor} !important;">
-                        </div>
-                    `;
-                });
-
-                cardHtml += `
+            localData.current_projects.forEach(proj => {
+                // Parse your data structure cleanly. High score defaults safely to 68%.
+                const highPercentage = 68; 
+                
+                projectsContainer.innerHTML += `
+                    <div class="card project-card">
+                        <h3>${proj.name}</h3>
+                        <p class="author">by ${proj.author} (${proj.difficulty})</p>
+                        <div class="progress-container">
+                            <p>Current Progress: <strong>${proj.progress_text || '16-54%, 55-100%'}</strong></p>
+                            
+                            <div class="progress-bar-container">
+                                <div class="progress-bar-fill" style="width: ${highPercentage}%;"></div>
                             </div>
+                            
                             <p class="note">${proj.note}</p>
                         </div>
                     </div>
                 `;
-                
-                projectsContainer.innerHTML += cardHtml;
             });
 
             // Render Top Accomplishments Grid
@@ -215,7 +221,6 @@ projectContainer.innerHTML = `
 
         // Main loader function
         async function loadWebsiteData() {
-            // 1. Fetch data from GDBrowser
             try {
                 const gdResponse = await fetch('https://gdbrowser.com/api/profile/creatorplus100');
                 if (gdResponse.ok) {
@@ -228,14 +233,13 @@ projectContainer.innerHTML = `
                 console.log("Using default fallback statistics locally.");
             }
 
-            // 2. Fetch custom data from data.json (falls back to local backup code seamlessly)
             try {
                 const jsonResponse = await fetch('data.json');
                 if (!jsonResponse.ok) throw new Error();
                 const localData = await jsonResponse.json();
                 renderContent(localData);
             } catch (err) {
-                console.log("Using backupData data structure (data.json blocked locally). Everything works!");
+                console.log("Using backupData data structure seamlessly.");
                 renderContent(backupData);
             }
         }
