@@ -1,28 +1,52 @@
 {
   "hardest_completions": [
     {
-      "name": "Future Funk",
-      "author": "JonathanGD",
+      "name": "Nine Circles",
+      "author": "Zobros",
       "difficulty": "Hard Demon",
       "tier": "hard",
-      "attempts": "Coming Soon",
-      "video_id": "YOUR_VIDEO_ID"
+      "attempts": "778",
+      "video_id": "aTObXPHFEPw"
     },
     {
-      "name": "B",
-      "author": "MotleyOrc",
+      "name": "Reanimation",
+      "author": "Terron",
       "difficulty": "Medium Demon",
       "tier": "medium",
-      "attempts": "1,200",
-      "video_id": ""
+      "attempts": "119",
+      "video_id": "QfCG_o9-LPE"
     },
     {
-      "name": "The Nightmare",
-      "author": "Jax",
+      "name": "Sakupen Egg",
+      "author": "Sivlol",
+      "difficulty": "Medium Demon",
+      "tier": "medium",
+      "attempts": "650",
+      "video_id": "nXQIFtTD6kM"
+    },
+    {
+      "name": "Paracosm Circles",
+      "author": "N1XO",
+      "difficulty": "Medium Demon",
+      "tier": "medium",
+      "attempts": "429",
+      "video_id": "9u_fkpAqdOY"
+    },
+    {
+      "name": "Decode",
+      "author": "Rek3dge",
       "difficulty": "Easy Demon",
       "tier": "easy",
-      "attempts": "340",
-      "video_id": ""
+      "attempts": "107",
+      "video_id": "Na7CLoDT9o"
+    },
+    {
+      "name": "X",
+      "author": "TriAxis",
+      "difficulty": "Easy Demon",
+      "tier": "easy",
+      "attempts": "163",
+      "video_id": "GpN0Mfy5t8s"
     }
   ]
   "current_projects": [
