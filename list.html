@@ -84,31 +84,39 @@
             container.innerHTML = '';
 
             completions.forEach((item, index) => {
-                const dynamicRank = index + 1;
+    const dynamicRank = index + 1;
 
-                let videoButton = '';
-                if (item.video_id) {
-                    videoButton = `<a href="https://youtu.be/${item.video_id}" target="_blank" class="watch-btn">Watch Video</a>`;
-                }
+    // Determine if this specific card deserves a theme override class
+    let themeClass = `border-${item.tier}`; // Standard fallback (e.g., border-hard)
+    
+    if (item.name.toLowerCase() === "nine circles") {
+        themeClass = "theme-hell";
+    } else if (item.name.toLowerCase() === "paracosm circles") {
+        themeClass = "theme-vortex";
+    }
 
-                // The dynamic URL query linking logic is perfectly self-contained here now
-                container.innerHTML += `
-                    <div class="card list-item border-${item.tier}">
-                        <div class="list-rank">#${dynamicRank}</div>
-                        <div class="list-info">
-                            <h3><a href="level.html?rank=${dynamicRank}" style="color: inherit; text-decoration: none;">${item.name}</a></h3>
-                            <div class="list-meta">
-                                by ${item.author} — <strong>${item.difficulty}</strong> (${item.attempts} Attempts)
-                            </div>
-                        </div>
-                        <div style="display: flex; gap: 10px; align-items: center;">
-                            <a href="level.html?rank=${dynamicRank}" class="watch-btn" style="background: #3b82f6;">View Details</a>
-                            ${videoButton}
-                        </div>
-                    </div>
-                `;
-            });
-        }
+    let videoButton = '';
+    if (item.video_id) {
+        videoButton = `<a href="https://youtu.be/${item.video_id}" target="_blank" class="watch-btn">Watch Video</a>`;
+    }
+
+    // Notice we use the themeClass variable in the div layout now
+    container.innerHTML += `
+        <div class="card list-item ${themeClass}">
+            <div class="list-rank">#${dynamicRank}</div>
+            <div class="list-info">
+                <h3><a href="level.html?rank=${dynamicRank}" style="color: inherit; text-decoration: none;">${item.name}</a></h3>
+                <div class="list-meta">
+                    by ${item.author} — <strong>${item.difficulty}</strong> (${item.attempts} Attempts)
+                </div>
+            </div>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <a href="level.html?rank=${dynamicRank}" class="watch-btn" style="background: #3b82f6;">View Details</a>
+                ${videoButton}
+            </div>
+        </div>
+    `;
+});
 
         async function initList() {
             try {
