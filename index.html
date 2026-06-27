@@ -142,23 +142,21 @@
             ]
         };
 
-        // Master function to build the progress bars and level cards
-        function renderContent(localData) {
-            const projectsContainer = document.getElementById('projects-list');
-            projectsContainer.innerHTML = ''; 
+       // Example snippet of how your project rendering loop should output the HTML structure:
+const highPercentage = 68; // This would dynamically parse your highest run (e.g., 68 from "0-68")
 
-            localData.current_projects.forEach(proj => {
-                // Formatting percentages nicely into text (e.g., "16-54%, 55-100%")
-                const textProgress = proj.runs.map(r => `${r}%`).join(', ');
-
-                let cardHtml = `
-                    <div class="card project-card">
-                        <h3>${proj.name}</h3>
-                        <p class="author">by ${proj.author} (${proj.difficulty})</p>
-                        <div class="progress-container">
-                            <p>Current Progress: <strong>${textProgress}</strong></p>
-                            <div class="progress-bar-bg" style="position: relative;">
-                `;
+projectContainer.innerHTML = `
+    <div class="project-card">
+        <h3>${project.name}</h3>
+        <p>by ${project.author} — <strong>${project.progress_text}</strong></p>
+        
+        <div class="progress-bar-container">
+            <div class="progress-bar-fill" style="width: ${highPercentage}%;"></div>
+        </div>
+        
+        <p class="project-note"><em>${project.note}</em></p>
+    </div>
+`;
 
                 // Define our sequence of run colors: 1st run = Red, 2nd run = Orange, 3rd = Yellow, etc.
                 const runColors = ["#ef4444", "#f97316", "#eab308", "#10b981", "#3b82f6"];
