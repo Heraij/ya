@@ -4,9 +4,9 @@
       "name": "Future Funk",
       "author": "JonathanGD",
       "difficulty": "Hard Demon",
+      "demon-type": "hard",
       "progress_text": "16-54%, 55-100%",
-      "bar_width": "45%",
-      "bar_offset": "55%",
+      "runs": ["0-29", "55-100"],
       "note": "Wayy to quick progress, something bout to happen."
     }
   ],
