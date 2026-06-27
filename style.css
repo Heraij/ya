@@ -1,3 +1,30 @@
+/* Target the primary watch/details buttons in your list layout */
+.watch-btn {
+    display: inline-block;
+    transition: all 0.2s ease-in-out; /* Smooth transition effect */
+    cursor: pointer;
+}
+
+/* Hover effects for the standard Red "Watch Video" button */
+.watch-btn:hover {
+    background: #cc0000 !important; /* Deeper red */
+    transform: translateY(-2px); /* Subtle lift up */
+    box-shadow: 0 4px 12px rgba(255, 0, 0, 0.3); /* Soft red glow */
+}
+
+/* Hover effects for the Blue "View Details" button */
+/* Since you applied inline background color, we match its hover state */
+.watch-btn[style*="background: #3b82f6"]:hover,
+.watch-btn[style*="background:#3b82f6"]:hover {
+    background: #1d4ed8 !important; /* Deeper blue */
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4); /* Soft blue glow */
+}
+
+/* Active click state (makes the button feel like it presses down) */
+.watch-btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
 /* Styling for the new list navigation button */
 .nav-list-btn {
     display: inline-flex;
