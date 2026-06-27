@@ -34,7 +34,7 @@
       "tier": "medium",
       "attempts": "429",
       "video_id": "9u_fkpAqdOY",
-      "descriptiom": "That's your fault for having ears"
+      "description": "That's your fault for having ears"
     },
     {
       "name": "Decode",
@@ -42,7 +42,7 @@
       "difficulty": "Easy Demon",
       "tier": "easy",
       "attempts": "107",
-      "video_id": "Na7CLoDT9o"
+      "video_id": "Na7CLoDT9o",
       "description": "SO SO harder then it should be"
     },
     {
@@ -51,7 +51,7 @@
       "difficulty": "Easy Demon",
       "tier": "easy",
       "attempts": "163",
-      "video_id": "GpN0Mfy5t8s"
+      "video_id": "GpN0Mfy5t8s",
       "description": "95%×2 need I say more?"
     }
   ],
