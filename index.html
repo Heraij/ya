@@ -105,9 +105,115 @@
     </footer>
 
     <!-- JavaScript to seamlessly update data when hosted live -->
+    <!-- JavaScript to Fetch Live Stats and JSON Portfolios -->
     <script>
+        // HARDCODED DEFAULT DATA: This ensures everything renders perfectly even while testing locally!
+        const backupData = {
+            "current_projects": [
+                {
+                    "name": "Future Funk",
+                    "author": "JonathanGD",
+                    "difficulty": "Hard Demon",
+                    "demon_type": "hard", 
+                    "runs": ["16-54", "55-100"],
+                    "note": "Using the Blitzkrieg Method. Destroying it chunk by chunk!"
+                }
+            ],
+            "top_accomplishments": [
+                {
+                    "name": "Future Funk",
+                    "details": "Progress: 55-100% & 16-54%",
+                    "status": "In Progress",
+                    "class": "hard"
+                },
+                {
+                    "name": "B",
+                    "details": "Att: 1,200 | Fluked from 65%",
+                    "status": "Completed",
+                    "class": "medium completed"
+                },
+                {
+                    "name": "The Nightmare",
+                    "details": "First ever Demon!",
+                    "status": "Completed",
+                    "class": "easy completed"
+                }
+            ]
+        };
+
+        // Master function to build the progress bars and level cards
+        function renderContent(localData) {
+            const projectsContainer = document.getElementById('projects-list');
+            projectsContainer.innerHTML = ''; 
+
+            localData.current_projects.forEach(proj => {
+                // Formatting percentages nicely into text (e.g., "16-54%, 55-100%")
+                const textProgress = proj.runs.map(r => `${r}%`).join(', ');
+                const colorClass = `${proj.demon_type || 'hard'}-demon`;
+
+                // Starting HTML shell for the card
+                let cardHtml = `
+                    <div class="card project-card">
+                        <h3>${proj.name}</h3>
+                        <p class="author">by ${proj.author} (${proj.difficulty})</p>
+                        <div class="progress-container">
+                            <p>Current Progress: <strong>${textProgress}</strong></p>
+                            <div class="progress-bar-bg" style="position: relative;">
+                `;
+
+                // Loop through each run and calculate its exact length and offset
+                proj.runs.forEach(runStr => {
+                    let start = 0;
+                    let end = 0;
+
+                    if (runStr.includes('-')) {
+                        const parts = runStr.split('-');
+                        start = parseFloat(parts[0]);
+                        end = parseFloat(parts[1]);
+                    } else {
+                        start = 0;
+                        end = parseFloat(runStr);
+                    }
+
+                    const width = end - start;
+                    const offset = start;
+
+                    // Adding the individual progress bar piece
+                    cardHtml += `
+                        <div class="progress-bar ${colorClass}" 
+                             style="width: ${width}%; margin-left: ${offset}%; position: absolute; top:0; left:0; height:100%;">
+                        </div>
+                    `;
+                });
+
+                // Closing up the HTML containers
+                cardHtml += `
+                            </div>
+                            <p class="note">${proj.note}</p>
+                        </div>
+                    </div>
+                `;
+                
+                projectsContainer.innerHTML += cardHtml;
+            });
+
+            // Render Top Accomplishments Grid
+            const accomplishmentsGrid = document.getElementById('accomplishments-grid');
+            accomplishmentsGrid.innerHTML = ''; 
+            localData.top_accomplishments.forEach(acc => {
+                accomplishmentsGrid.innerHTML += `
+                    <div class="card demon-card ${acc.class.split(' ')[0]}">
+                        <h3>${acc.name}</h3>
+                        <p>${acc.details}</p>
+                        <span class="badge ${acc.class.includes('completed') ? 'completed' : ''}">${acc.status}</span>
+                    </div>
+                `;
+            });
+        }
+
+        // Main loader function
         async function loadWebsiteData() {
-            // 1. Try fetching live stats from GDBrowser
+            // 1. Fetch data from GDBrowser
             try {
                 const gdResponse = await fetch('https://gdbrowser.com/api/profile/creatorplus100');
                 if (gdResponse.ok) {
@@ -117,47 +223,18 @@
                     document.getElementById('gd-cp').innerText = gdData.creatorPoints.toLocaleString();
                 }
             } catch (err) {
-                console.log("Using default stat placeholders (GDBrowser API blocked locally).");
+                console.log("Using default fallback statistics locally.");
             }
 
-            // 2. Try fetching custom level layouts from data.json
+            // 2. Fetch custom data from data.json (falls back to local backup code seamlessly)
             try {
                 const jsonResponse = await fetch('data.json');
                 if (!jsonResponse.ok) throw new Error();
                 const localData = await jsonResponse.json();
-
-                // If data.json is found and loaded successfully, overwrite the HTML defaults
-                const projectsContainer = document.getElementById('projects-list');
-                projectsContainer.innerHTML = ''; 
-                localData.current_projects.forEach(proj => {
-                    projectsContainer.innerHTML += `
-                        <div class="card project-card">
-                            <h3>${proj.name}</h3>
-                            <p class="author">by ${proj.author} (${proj.difficulty})</p>
-                            <div class="progress-container">
-                                <p>Current Progress: <strong>${proj.progress_text}</strong></p>
-                                <div class="progress-bar-bg">
-                                    <div class="progress-bar" style="width: ${proj.bar_width}; margin-left: ${proj.bar_offset};"></div>
-                                </div>
-                                <p class="note">${proj.note}</p>
-                            </div>
-                        </div>
-                    `;
-                });
-
-                const accomplishmentsGrid = document.getElementById('accomplishments-grid');
-                accomplishmentsGrid.innerHTML = ''; 
-                localData.top_accomplishments.forEach(acc => {
-                    accomplishmentsGrid.innerHTML += `
-                        <div class="card demon-card ${acc.class.split(' ')[0]}">
-                            <h3>${acc.name}</h3>
-                            <p>${acc.details}</p>
-                            <span class="badge ${acc.class.includes('completed') ? 'completed' : ''}">${acc.status}</span>
-                        </div>
-                    `;
-                });
+                renderContent(localData);
             } catch (err) {
-                console.log("Using default HTML layout (data.json blocked locally). Everything works!");
+                console.log("Using backupData data structure (data.json blocked locally). Everything works!");
+                renderContent(backupData);
             }
         }
 
